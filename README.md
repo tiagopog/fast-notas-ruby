@@ -1,12 +1,8 @@
-# FastNotas
+# Fast Notas Ruby
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/fast_notas`. To experiment with that code, run `bin/console` for an interactive prompt.
+Ruby toolkit para o [Gateway de emissão fiscal][link-doc-api] da [Fast Notas][link-fast-notas].
 
-TODO: Delete this and the text above, and describe your gem
-
-## Installation
-
-Add this line to your application's Gemfile:
+## Instalação
 
 ```ruby
 gem 'fast_notas'
@@ -20,17 +16,80 @@ Or install it yourself as:
 
     $ gem install fast_notas
 
-## Usage
+## Uso
+Os métodos da API estão disponíveis atraves dos métodos da instancia de um cliente
 
-TODO: Write usage instructions here
+```ruby
+  client = FastNotas::Client.new(API_KEY)
+```
 
-## Development
+## Recursos
+Esta biblioteca possibilita um acesso fácil e padronizado aos seguintes endpoints da [API][link-doc-api].
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+* [companies](http://docs.api.fastnotas.com/#companies)
+* [customers](http://docs.api.fastnotas.com/#customer)
+* [items](http://docs.api.fastnotas.com/#items)
+* [documents](http://docs.api.fastnotas.com/#documents)
+* [document_schemas](http://docs.api.fastnotas.com/#document-schemas)
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+### Recursos padrões
+Os recursos são fornecidos através de nomenclaturas padrões, seguido do nome da entidade que deve ser acessada.
+Exemplo: `list_customers`, `list_documents` ...
 
-## Contributing
+Abaixo temos a lista de recursos padrões e seus possíveis parâmetros:
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/fast_notas.
+* `list`
+    1. Pode ser enviado um Hash multidimensional que será convertido em `query string` (opcional)
+* `show`
+    1. Id do registro
+* `create`
+    1. Hash com os dados para criação do registro
+* `update`
+    1. Id do registro
+    2. Hash com os dados que serão alterados no registro
+* `delete`
+    1. Id do registro
 
+### Exemplo
+
+```ruby
+  # Listando clientes de uma empresa
+  client.list_customers
+  # => [{:id=>"xxxxx-xxxxx-xxxxx-xxxxx", :name=>"Tales Galvão", ...
+
+  # Consultando um cliente
+  client.show_customer("xxxxx-xxxxx-xxxxx-xxxxx")
+  # => {:id=>"xxxxx-xxxxx-xxxxx-xxxxx", :name=>"Tales Galvão", ...
+
+  # Criando um cliente
+  client.create_customer({name: 'Tales Galvão', registry_code: '12345678901234')
+  # => {:id=>"xxxxx-xxxxx-xxxxx-xxxxx", :name=>"Tales de Paula Galvão", ...
+
+  # Atualizando um cliente
+  client.update_customer("xxxxx-xxxxx-xxxxx-xxxxx", {name: 'Tales de Paula Galvão'})
+  # => {:id=>"xxxxx-xxxxx-xxxxx-xxxxx", :name=>"Tales de Paula Galvão", ...
+```
+
+### Acessando o último request HTTP completo
+
+```ruby
+  customers = client.list_customers
+  response  = client.last_request
+  status = response.status
+  headers = response.status
+```
+
+## Dúvidas
+Caso necessite de informações sobre a plataforma ou API, por favor entre em contato com o [atendimento@fastnotas.com](mailto:atendimento@fastnotas.com).
+
+## Créditos
+- [Fast Notas][link-author]
+- [Todos os Contribuidores][link-contributors]
+
+## Licença
+GNU GPLv3. Por favor, veja o [Arquivo de Licença](license.txt) para mais informações.
+
+[link-fast-notas]: https://www.fastnotas.com
+[link-doc-api]: http://doc.api.fastnotas.com
+[link-author]: https://github.com/fast-notas
+[link-contributors]: https://github.com/fast-notas/fast-notas-ruby/graphs/contributors
