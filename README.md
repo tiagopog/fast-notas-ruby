@@ -76,7 +76,7 @@ Abaixo temos a lista de recursos padrões e seus possíveis parâmetros:
   customers = client.list_customers
   response  = client.last_request
   status = response.status
-  headers = response.status
+  headers = response.headers
 ```
 
 ## Dúvidas
