@@ -17,6 +17,10 @@ module FastNotas
       request(:put, "#{endpoint}/#{id}", payload)
     end
 
+    def delete(endpoint, id)
+      request(:delete, "#{endpoint}/#{id}")
+    end
+
   end
 end
 

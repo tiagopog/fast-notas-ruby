@@ -1,7 +1,7 @@
 module FastNotas
   module Rest
 
-    # Methods for the company API
+    # Methods for the item API
     # @see http://docs.api.fastnotas.com/#items
     module Item
 

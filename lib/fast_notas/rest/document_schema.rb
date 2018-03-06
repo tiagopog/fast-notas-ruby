@@ -1,7 +1,7 @@
 module FastNotas
   module Rest
 
-    # Methods for the company API
+    # Methods for the document schema API
     # @see http://docs.api.fastnotas.com/#document-schemas
     module DocumentSchema
 
