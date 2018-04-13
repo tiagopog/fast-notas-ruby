@@ -1,5 +1,3 @@
-require 'active_support'
-require 'active_support/core_ext'
 require 'rest-client'
 require 'fast_notas/response'
 
@@ -7,13 +5,25 @@ module FastNotas
   module Request
     module_function
 
+    def to_param(value)
+      slug = value.to_s.downcase.gsub(/'/, '').gsub(/[^a-z0-9]+/, '-')
+      slug.chop! if slug[-1] == '-'
+      slug
+    end
+
+    def to_query(params)
+      params.map do |key, value|
+        [CGI.escape(to_param(key)), CGI.escape(to_param(value))].join('=')
+      end.join('&')
+    end
+
     def build_request_for(client, method, path, params, payload)
       {
         method: method,
-        url: [Default.api_endpoint, path, "?#{params.to_query}"].join('/'),
+        url: [client.api_endpoint, path, "?#{to_query(params)}"].join('/'),
         payload: payload,
         user: client.api_key,
-        headers: Default.connection_options[:headers]
+        headers: client.connection_options[:headers]
       }
     end
 

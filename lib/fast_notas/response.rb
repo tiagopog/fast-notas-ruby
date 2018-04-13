@@ -4,10 +4,6 @@ module FastNotas
   class Response
     attr_reader :raw_response
 
-    delegate :code, to: :@response
-
-    alias status code
-
     def initialize(raw_response)
       @raw_response = raw_response
     end
@@ -23,5 +19,11 @@ module FastNotas
     def fail?
       !success?
     end
+
+    def code
+      raw_response.code
+    end
+
+    alias status code
   end
 end
