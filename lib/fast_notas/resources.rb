@@ -1,27 +1,23 @@
 module FastNotas
   module Resources
-
-    def list(endpoint, params={})
-      request(:get, endpoint, params)
+    def list(endpoint, params = {})
+      Request.call(self, :get, endpoint, params)
     end
 
     def show(endpoint, id)
-      request(:get, "#{endpoint}/#{id}")
+      Request.call(self, :get, "#{endpoint}/#{id}")
     end
 
     def create(endpoint, payload)
-      request(:post, endpoint, payload)
+      Request.call(self, :post, endpoint, payload)
     end
 
     def update(endpoint, id, payload)
-      request(:put, "#{endpoint}/#{id}", payload)
+      Request.call(self, :put, "#{endpoint}/#{id}", payload)
     end
 
     def delete(endpoint, id)
-      request(:delete, "#{endpoint}/#{id}")
+      Request.call(self, :delete, "#{endpoint}/#{id}")
     end
-
   end
 end
-
-

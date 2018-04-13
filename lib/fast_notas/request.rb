@@ -1,42 +1,30 @@
 require 'active_support'
 require 'active_support/core_ext'
-require 'fast_notas/paginate'
-require 'fast_notas/resources'
+require 'rest-client'
+require 'fast_notas/response'
 
 module FastNotas
   module Request
+    module_function
 
-    include FastNotas::Paginate
-    include FastNotas::Resources
-
-    attr_accessor :last_request
-
-    def http_status_code
-      last_request.code
+    def build_request_for(client, method, path, params, payload)
+      {
+        method: method,
+        url: [Default.api_endpoint, path, "?#{params.to_query}"].join('/'),
+        payload: payload,
+        user: client.api_key,
+        headers: Default.connection_options[:headers]
+      }
     end
 
-    def body
-      JSON.parse(last_request.body)
-    end
-
-    private
-
-    def request(method= :get, endpoint=nil, params={}, payload=nil)
-      begin
-        @last_request = RestClient::Request.execute(
-          method: method,
-          url: "#{api_endpoint}/#{endpoint}?#{params.to_query}",
-          payload: payload,
-          user: api_key,
-          headers: connection_options[:headers]
-        )
-
-        body
-      rescue StandardError => e
-        @last_request = e.try(:response)
-
-        false
-      end
+    def call(client, method = :get, path = '', params = {}, payload = nil)
+      request_data = build_request_for(client, method, path, params, payload)
+      response     = RestClient::Request.execute(request_data)
+      FastNotas::Response.new(response)
+    rescue RestClient::NotFound,
+           RestClient::UnprocessableEntity => e
+      raise(e) unless e.respond_to?(:response)
+      FastNotas::Response.new(e.response)
     end
   end
 end

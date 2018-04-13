@@ -4,13 +4,12 @@ module FastNotas
   module Default
     # Default API endpoint
     API_ENDPOINT = 'https://api.fastnotas.com/v1'.freeze
-
     # Default media type
     MEDIA_TYPE   = 'application/api+json'.freeze
-
     # Default User Agent header string
     USER_AGENT   = "Fast-Notas-Ruby/#{FastNotas::VERSION}".freeze
 
+    module_function
 
     # Default api endpoint string from ENV or API_ENDPOINT
     # @return [String]
@@ -43,6 +42,5 @@ module FastNotas
         }
       }
     end
-
   end
 end
