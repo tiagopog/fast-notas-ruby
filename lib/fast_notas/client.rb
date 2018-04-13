@@ -1,14 +1,12 @@
-require 'fast_notas/rest'
 require 'fast_notas/request'
+require 'fast_notas/rest'
 require 'fast_notas/paginate'
-require 'fast_notas/resources'
 require 'fast_notas/version'
 
 module FastNotas
   class Client
     include FastNotas::Rest
     include FastNotas::Paginate
-    include FastNotas::Resources
 
     # Default API endpoint
     API_ENDPOINT = 'https://api.fastnotas.com/v1'.freeze

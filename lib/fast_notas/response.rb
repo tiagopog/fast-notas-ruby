@@ -8,8 +8,12 @@ module FastNotas
       @raw_response = raw_response
     end
 
-    def body
+    def data
       Oj.load(raw_response.body)
+    end
+
+    def errors
+      data if fail?
     end
 
     def success?

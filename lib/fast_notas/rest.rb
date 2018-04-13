@@ -1,35 +1,25 @@
-Dir[File.expand_path("../rest/**/*.rb", __FILE__)].each do |file|
-  require file
-end
+require 'fast_notas/request'
 
 module FastNotas
   module Rest
-    include FastNotas::Rest::Company
-
-    def resource_method?(method_name)
-      FastNotas::Resources.public_instance_methods.include? method_name.to_sym
+    def list(endpoint, params = {})
+      Request.call(self, :get, endpoint, params)
     end
 
-    def entity?(entity_name)
-      FastNotas::Rest.constants.include? entity_name.to_sym
+    def show(endpoint, id)
+      Request.call(self, :get, "#{endpoint}/#{id}")
     end
 
-    def method_missing(method_name, *args)
-      method_array = method_name.to_s.split('_')
+    def create(endpoint, payload)
+      Request.call(self, :post, endpoint, payload)
+    end
 
-      raise NoMethodError unless method_array.size > 1
+    def update(endpoint, id, payload)
+      Request.call(self, :put, "#{endpoint}/#{id}", payload)
+    end
 
-      resource_name = method_array[0]
-      entity_name = method_array.from(1).join('_').singularize.capitalize
-
-      raise NoMethodError unless resource_method?(resource_name)
-
-      raise NoMethodError unless entity?(entity_name)
-
-      endpoint = send("#{entity_name.downcase}_endpoint")
-
-      send(resource_name, endpoint , *args)
-
+    def delete(endpoint, id)
+      Request.call(self, :delete, "#{endpoint}/#{id}")
     end
   end
 end
