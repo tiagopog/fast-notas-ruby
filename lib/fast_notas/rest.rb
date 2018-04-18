@@ -1,5 +1,3 @@
-require 'fast_notas/request'
-
 module FastNotas
   module Rest
     def list(endpoint, params = {})

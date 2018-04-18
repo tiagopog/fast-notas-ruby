@@ -32,5 +32,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'byebug'
 
   spec.add_runtime_dependency 'rest-client', '~> 2.0'
-  spec.add_runtime_dependency 'oj', '~> 3.5'
+  spec.add_runtime_dependency 'oj', '~> 2.12'
 end
