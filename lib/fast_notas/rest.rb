@@ -9,11 +9,11 @@ module FastNotas
     end
 
     def create(endpoint, payload)
-      Request.call(self, :post, endpoint, payload)
+      Request.call(self, :post, endpoint, {}, payload)
     end
 
     def update(endpoint, id, payload)
-      Request.call(self, :put, "#{endpoint}/#{id}", payload)
+      Request.call(self, :put, "#{endpoint}/#{id}", {}, payload)
     end
 
     def delete(endpoint, id)
